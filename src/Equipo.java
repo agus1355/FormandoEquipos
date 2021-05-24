@@ -48,7 +48,6 @@ public class Equipo {
 			return this;
 		}
 		
-		
 		return this.obtenerEquipoMaxAfinidad(nroPregunta, equipos);
 	}
 
@@ -108,12 +107,12 @@ public class Equipo {
 	
 	private Equipo obtenerEquipoMaxAfinidad(int nroPregunta,List<Equipo> equipos)
 	{
-		Equipo 	maxAfinidad = null,
+		Equipo 	maxAfinidad = this,
 				retornado;
 		
 		for (Equipo equipo : equipos) {
 			retornado = equipo.buscarEquipo(nroPregunta+1);
-			if(maxAfinidad == null || (retornado.afinidad > maxAfinidad.afinidad) )
+			if((retornado.afinidad > maxAfinidad.afinidad) )
 			{
 				maxAfinidad = retornado;
 			}
