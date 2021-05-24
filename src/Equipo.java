@@ -31,36 +31,26 @@ public class Equipo {
 	public Equipo buscarEquipo(int nroPregunta)
 	{
 		if(nroPregunta > cantPreguntas)
-			return null;
+		{
+			this.calcularAfinidad(nroPregunta-1);
+			this.obtenerRespuestasIguales(nroPregunta-1);			
+			return this;
+		}
 		
-		Map<Character,List<Colaborador>> posiblesEquipos;// = new HashMap<Character,LinkedList<Colaborador>>(); 
-		
+		Map<Character,List<Colaborador>>
 		posiblesEquipos = this.obtenerPosiblesEquipos(nroPregunta);
 	
 		List<Equipo> equipos = this.generarEquipos(nroPregunta, posiblesEquipos);
 		
 		if(equipos.isEmpty())
 		{
-			return null;
+			this.calcularAfinidad(nroPregunta-1);
+			this.obtenerRespuestasIguales(nroPregunta-1);
+			return this;
 		}
 		
-		Equipo 	maxAfinidad = null,
-				retornado;
-		for (Equipo equipo : equipos) {
-			retornado = equipo.buscarEquipo(nroPregunta+1);
-			if(retornado == null)
-			{
-				equipo.calcularAfinidad(nroPregunta);
-				equipo.obtenerRespuestasIguales(nroPregunta);
-				retornado = equipo;
-			}
-			if(maxAfinidad == null || (retornado.afinidad > maxAfinidad.afinidad) )
-			{
-				maxAfinidad = retornado;
-			}
-		}
 		
-		return maxAfinidad;
+		return this.obtenerEquipoMaxAfinidad(nroPregunta, equipos);
 	}
 
 	private void calcularAfinidad(int nroPregunta) {	
@@ -116,4 +106,21 @@ public class Equipo {
 		
 		return equiposNuevos;
 	}
+	
+	private Equipo obtenerEquipoMaxAfinidad(int nroPregunta,List<Equipo> equipos)
+	{
+		Equipo 	maxAfinidad = null,
+				retornado;
+		
+		for (Equipo equipo : equipos) {
+			retornado = equipo.buscarEquipo(nroPregunta+1);
+			if(maxAfinidad == null || (retornado.afinidad > maxAfinidad.afinidad) )
+			{
+				maxAfinidad = retornado;
+			}
+		}
+		
+		return maxAfinidad;
+	}
+	
 }
