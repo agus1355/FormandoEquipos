@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +52,11 @@ public class Equipo {
 		return this.obtenerEquipoMaxAfinidad(nroPregunta, equipos);
 	}
 
+	@Override
+	public String toString() {
+		return this.afinidad + "\n" + this.respuestasIguales;
+	}
+
 	private void calcularAfinidad(int nroPregunta) {	
 		this.afinidad = this.colaboradores.size() * (int)Math.pow(nroPregunta, 2);
 	}
@@ -60,11 +64,6 @@ public class Equipo {
 	private void obtenerRespuestasIguales(int nroPregunta)
 	{
 		this.respuestasIguales = this.colaboradores.get(0).getPreguntas().substring(0,nroPregunta);
-	}
-
-	@Override
-	public String toString() {
-		return this.afinidad + "\n" + this.respuestasIguales;
 	}
 	
 	private Map<Character,List<Colaborador>> obtenerPosiblesEquipos(int nroPregunta)
@@ -95,12 +94,12 @@ public class Equipo {
 	private List<Equipo> generarEquipos(int nroPregunta,Map<Character,List<Colaborador>> equiposPosibles)
 	{
 		List<Equipo> equiposNuevos = new LinkedList<Equipo>();
-		for (Iterator<List<Colaborador>> it = equiposPosibles.values().iterator(); it.hasNext();)
+		
+		for(List<Colaborador> colaboradores : equiposPosibles.values() )
 		{
-			LinkedList<Colaborador> colaboradores = (LinkedList<Colaborador>)it.next();
 			if(colaboradores.size() >= 2)
 			{
-				equiposNuevos.add(new Equipo(colaboradores));				
+				equiposNuevos.add(new Equipo((LinkedList<Colaborador>)colaboradores));				
 			}
 		}
 		
